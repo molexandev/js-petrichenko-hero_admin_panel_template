@@ -7,8 +7,9 @@
 // Дополнительно:
 // Элементы <option></option> желательно сформировать на базе
 // данных из фильтров
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { useHttp } from '../../hooks/http.hook';
 import { heroesFetchingError, heroAdded } from '../../actions';
 import { v4 as uuidv4 } from 'uuid';
@@ -18,9 +19,16 @@ const HeroesAddForm = () => {
    const [name, setName] = useState('');
    const [description, setDescription] = useState('');
    const [element, setElement] = useState('');
+   const filters = useSelector((state) => state.filters);
 
    const dispatch = useDispatch();
    const { request } = useHttp();
+
+   useEffect(() => {
+      request('http://localhost:3001/filters')
+         .then((data) => setFilters(data))
+         .catch((e) => console.log('Error fetching filters', e));
+   }, []);
 
    const onSubmitHandler = (e) => {
       e.preventDefault();
@@ -88,10 +96,13 @@ const HeroesAddForm = () => {
                name="element"
             >
                <option>Я владею элементом...</option>
-               <option value="fire">Огонь</option>
-               <option value="water">Вода</option>
-               <option value="wind">Ветер</option>
-               <option value="earth">Земля</option>
+               {filters
+                  .filter((filter) => filter.name !== 'all')
+                  .map(({ name, label }) => (
+                     <option key={name} value={name}>
+                        {label}
+                     </option>
+                  ))}
             </select>
          </div>
 
