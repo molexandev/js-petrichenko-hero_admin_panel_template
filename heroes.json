@@ -25,10 +25,16 @@
       "element": "fire"
     },
     {
-      "id": "fd6abe12-5655-4b11-ae27-24f0b7c2b839",
-      "name": "Books",
-      "description": "фіафіфпф",
-      "element": ""
+      "id": "6a830429-dae4-4985-8fbe-faca1fb2ad32",
+      "name": "Олександр Моташко",
+      "description": "ASFFSAFSAF",
+      "element": "fire"
+    },
+    {
+      "id": "cec46ad2-a778-458e-8360-77eba870860b",
+      "name": "Верстка",
+      "description": "asfafaf",
+      "element": "wind"
     }
   ],
   "filters": [
