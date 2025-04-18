@@ -9,17 +9,15 @@
 // данных из фильтров
 import { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
-import { useSelector } from 'react-redux';
 import { useHttp } from '../../hooks/http.hook';
 import { heroesFetchingError, heroAdded } from '../../actions';
 import { v4 as uuidv4 } from 'uuid';
-import { CSSTransition, TransitionGroup } from 'react-transition-group';
 
 const HeroesAddForm = () => {
    const [name, setName] = useState('');
    const [description, setDescription] = useState('');
    const [element, setElement] = useState('');
-   const filters = useSelector((state) => state.filters);
+   const [filters, setFilters] = useState([]);
 
    const dispatch = useDispatch();
    const { request } = useHttp();
@@ -27,7 +25,7 @@ const HeroesAddForm = () => {
    useEffect(() => {
       request('http://localhost:3001/filters')
          .then((data) => setFilters(data))
-         .catch((e) => console.log('Error fetching filters', e));
+         .catch(() => console.log('Не вдалося отримати опції'));
    }, []);
 
    const onSubmitHandler = (e) => {

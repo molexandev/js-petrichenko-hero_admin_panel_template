@@ -15,8 +15,14 @@ import './HeroesList.scss';
 
 const HeroesList = () => {
    const { heroes, heroesLoadingStatus } = useSelector((state) => state);
+   const activeFilter = useSelector((state) => state.activeFilter);
    const dispatch = useDispatch();
    const { request } = useHttp();
+
+   const filteredHeroes =
+      activeFilter === 'all'
+         ? heroes
+         : heroes.filter((hero) => hero.element === activeFilter);
 
    useEffect(() => {
       dispatch(heroesFetching());
@@ -54,7 +60,8 @@ const HeroesList = () => {
          </TransitionGroup>
       );
    };
-   const elements = renderHeroesList(heroes);
+   const elements = renderHeroesList(filteredHeroes);
+
    return <ul>{elements}</ul>;
 };
 

@@ -5,19 +5,46 @@
 // Изменять json-файл для удобства МОЖНО!
 // Представьте, что вы попросили бэкенд-разработчика об этом
 
+import { useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { useHttp } from '../../hooks/http.hook';
+import {
+   filtersFetching,
+   filtersFetched,
+   filtersFetchingError,
+   activeFilterChanged,
+} from '../../actions';
+
 const HeroesFilters = () => {
+   const dispatch = useDispatch();
+   const filters = useSelector((state) => state.filters);
+   const activeFilter = useSelector((state) => state.activeFilter);
+   const { request } = useHttp();
+
+   const handleFilterClick = (name) => {
+      dispatch(activeFilterChanged(name));
+   };
+
+   useEffect(() => {
+      dispatch(filtersFetching());
+      request('http://localhost:3001/filters')
+         .then((data) => dispatch(filtersFetched(data)))
+         .catch(() => dispatch(filtersFetchingError()));
+   }, []);
+
    return (
-      <div className="card shadow-lg mt-4">
-         <div className="card-body">
-            <p className="card-text">Отфильтруйте героев по элементам</p>
-            <div className="btn-group">
-               <button className="btn btn-outline-dark active">Все</button>
-               <button className="btn btn-danger">Огонь</button>
-               <button className="btn btn-primary">Вода</button>
-               <button className="btn btn-success">Ветер</button>
-               <button className="btn btn-secondary">Земля</button>
-            </div>
-         </div>
+      <div className="btn-group">
+         {filters.map(({ name, label, className }) => (
+            <button
+               key={name}
+               className={`btn ${className} ${
+                  activeFilter === name ? 'active' : ''
+               }`}
+               onClick={() => handleFilterClick(name)}
+            >
+               {label}
+            </button>
+         ))}
       </div>
    );
 };
