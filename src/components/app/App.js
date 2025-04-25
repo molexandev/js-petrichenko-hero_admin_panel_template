@@ -5,18 +5,17 @@ import HeroesFilters from '../heroesFilters/HeroesFilters';
 import './app.scss';
 
 const App = () => {
-    
-    return (
-        <main className="app">
-            <div className="content">
-                <HeroesList/>
-                <div className="content__interactive">
-                    <HeroesAddForm/>
-                    <HeroesFilters/>
-                </div>
+   return (
+      <main className="app">
+         <div className="content">
+            <HeroesList />
+            <div className="content__interactive">
+               <HeroesAddForm />
+               <HeroesFilters />
             </div>
-        </main>
-    )
-}
+         </div>
+      </main>
+   );
+};
 
 export default App;
